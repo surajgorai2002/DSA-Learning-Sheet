@@ -1,0 +1,45 @@
+#include<bits/stdc++.h>
+using namespace std ;
+int solve(int a[], int b, int n  )
+{
+int i=0;int count =0;
+while(i<n)
+{
+    int bulbavail=0;
+      int right=max(i+b-1,n-1);
+      int left= max(i-b+1,0);
+      while(right>=left)
+      {
+          if(a[right]==1)
+          {
+          bulbavail=1;
+          break;
+          }
+          right--;
+      }
+      if(bulbavail==0)
+      return -1;
+      count++;
+      i=right+b;
+
+      
+}
+return count;
+}
+int main()
+{
+    int n ,i,b;
+    cin>>n;
+    cin>>b;
+int a[n];
+for(i=0;i<n;i++)
+{
+    cin>>a[i];
+
+}
+cout<<solve(a,b,n);
+
+
+
+    return 0;
+}
