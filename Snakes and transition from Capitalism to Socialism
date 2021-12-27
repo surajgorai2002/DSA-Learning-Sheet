@@ -1,0 +1,114 @@
+//After a long duration of the painful, torturous and tumultuous periods of capitalism in Snakeland, now the snakes have decided to adopt socialism.
+The houses in Snakeland are arranged in a rectangular fashion of dimension n * m.
+The wealth of the snake in the house at cell (i, j) is given by a[i][j] rupees.
+
+A bill has been passed for making a smooth transition from capitalism to socialism. At the end of each hour, the wealth of a snake will grow and will become equal to the highest wealth that its neighbor had (at the start of the hour). 
+That is, consider the maximum wealth among its neighbors at the start of the hour, and this snake's wealth will become equal to that at the end of the hour. Note that this increase in wealth will happen simultaneously for each snake. 
+Two houses are said to be neighbors of each other if they share a side or corner with each other. Find out the minimum number of hours required for this transition.
+
+
+
+//
+#include<bits/stdc++.h>
+using namespace std;
+#define fastio ios::sync_with_stdio(false); cin.tie(0); cout.tie(0);
+const int S =1e3+9;
+int a[S][S];
+int level[S][S];
+int vis[S][S];
+int n , m ;
+bool valid(int xx , int yy)
+{
+   return xx>=0 && yy>=0 && xx<=n-1 && yy<=m-1;
+}
+void reset()
+{
+  int i ,j ; 
+
+  for(int i =0;i<n ;i++)
+    {
+       for(j=0;j<m ; j++)
+       {
+         vis[i][j]=0;
+         level[i][j]=-1;
+       }
+    }
+    return ; 
+
+}
+vector<pair<int, int> > movements={
+  {1,0},{-1,0},
+  {0,1},{0,-1},
+  {-1,-1},{-1,1},
+  {1,1},{-1,1}
+};
+int bfs( )
+{
+  int i,j, max_e=0;
+  int maxl=0;
+  queue<pair<int, int>> q;
+  for( i =0;i<n ;i++)
+    {
+       for(j=0;j<m ; j++)
+       {
+         max_e=max(max_e,a[i][j]);
+       }
+    }
+    for(int i =0;i<n ;i++)
+    {
+       for(j=0;j<m ; j++)
+       {
+         if(a[i][j]==max_e)
+         {
+           q.push({i,j});
+           level[i][j]=0;
+           vis[i][j]=1;
+         }
+       }
+    }
+    while(!q.empty())
+    {
+       pair<int, int> fr= q.front();
+       int x =fr.first;
+       int y= fr.second;
+       q.pop();
+       for(auto movement: movements)
+       {
+         int xx=movement.first+x;
+         int yy=movement.second+y;
+         if(!valid(xx,yy))
+         continue;
+         if(vis[xx][yy])
+         continue;
+         q.push({xx,yy});
+         vis[xx][yy]=1;
+         level[xx][yy]=level[x][y]+1;
+         maxl=max(maxl, level[xx][yy]);
+       }
+    }
+
+
+return maxl;
+    
+}
+int main()
+{
+  int t; 
+  cin>> t; 
+  while(t--)
+  {
+    cin>>n>>m;
+    reset();
+    int i , j;
+    for( i =0;i<n ;i++)
+    {
+       for(j=0;j<m ; j++)
+       {
+       cin>>a[i][j];
+       }
+    }
+    cout<<bfs()<<endl;; 
+  }
+   return 0;
+   
+}
