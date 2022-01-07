@@ -1,0 +1,35 @@
+//Problem Description
+
+Given an integer array A, find if an integer p exists in the array such that the number of integers greater than p in the array equals to p.
+time complexity=O(n)
+space complexity =O(n)
+
+
+int Solution::solve(vector<int> &A) {
+    int n =A.size();
+    int count[n+1]={0};
+
+     for(int i =0;i< n ;i++)
+     {
+       if(A[i]<0)
+       continue;
+       if(A[i]>n-1)
+       {
+           count[n]++;
+       }   
+       else
+       {
+           count[A[i]]++;
+       }
+     }  
+     int totalgreater=count[n];int i ;
+     for( i =n-1;i>=0;i--)
+     {
+         if(totalgreater==i && count[i]!=0)
+         {
+            return 1;
+         }
+         totalgreater+=count[i];
+     }
+      return i; 
+  }
